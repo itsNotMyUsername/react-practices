@@ -21,31 +21,40 @@ class App extends React.Component {
       },
       listVideosWidth: 0,
       videoWidth: 0,
+      searchTerm: "",
+      nextPageToken: "",
     };
     this.videosListRef = React.createRef();
     this.currentVideoRef = React.createRef();
   }
 
-  onSearchSubmit = async (term) => {
+  search = async (term) => {
     const resp = await yt.get("/search", {
       params: {
         q: term,
-        part: "snippet",
-        maxResults: 5,
+        pageToken: this.state.nextPageToken,
       },
     });
-
     const results = resp.data.items.filter((item) => {
       return item.id.videoId ? true : false;
     });
+    this.setState({ nextPageToken: resp.data.nextPageToken });
+    return results;
+  };
+
+  onSearchSubmit = async (term) => {
+    const results = await this.search(term);
+
     const currentVideo = {
       id: results[0].id.videoId,
       title: results[0].snippet.title,
       description: results[0].snippet.description,
     };
+
     this.setState({
       currentVideo,
       videosList: results.slice(1, results.length),
+      searchTerm: term,
     });
   };
 
@@ -74,8 +83,23 @@ class App extends React.Component {
     return el.clientWidth - pl - pr;
   };
 
-  onListVideosClick = (videoId) => {
-    console.log(videoId);
+  onListVideosClick = async (videoId) => {
+    const newVideosList = this.state.videosList.filter((video) => {
+      if (video.id.videoId === videoId) {
+        this.setState({ currentVideo: video });
+        return false;
+      }
+      return true;
+    });
+
+    console.log({ filteredVideoList: newVideosList });
+    if (this.state.videosList.length < 2) {
+      const results = await this.search(this.state.searchTerm);
+      console.log({ results: results });
+      newVideosList.push(results);
+    }
+    console.log({ resultsPushed: newVideosList });
+    // this.setState({ videosList: newVideosList });
   };
 
   render() {

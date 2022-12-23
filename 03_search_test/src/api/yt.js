@@ -1,8 +1,10 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://www.googleapis.com/youtube/v3",
+  baseURL: "https://yt.lemnoslife.com/noKey",
   params: {
-    key: "AIzaSyDf26nFuNIHxl9KN6I52MY_e6_Ojbma-AM",
+    part: "id,snippet",
+    maxResults: 2,
+    type: "video",
   },
 });

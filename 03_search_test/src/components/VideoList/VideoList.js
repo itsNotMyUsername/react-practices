@@ -11,6 +11,7 @@ class VideoList extends React.Component {
   };
 
   render() {
+    // console.log({ videos: this.props.videos });
     return (
       <div>
         {this.props.videos.map((v) => (
