@@ -84,7 +84,8 @@ class App extends React.Component {
   };
 
   onListVideosClick = async (videoId) => {
-    const newVideosList = this.state.videosList.filter((video) => {
+    let newVideosList = this.state.videosList.filter((video) => {
+      console.log({ video });
       if (video.id.videoId === videoId) {
         this.setState({ currentVideo: video });
         return false;
@@ -92,14 +93,11 @@ class App extends React.Component {
       return true;
     });
 
-    console.log({ filteredVideoList: newVideosList });
     if (this.state.videosList.length < 2) {
       const results = await this.search(this.state.searchTerm);
-      console.log({ results: results });
-      newVideosList.push(results);
+      newVideosList = newVideosList.concat(results);
     }
-    console.log({ resultsPushed: newVideosList });
-    // this.setState({ videosList: newVideosList });
+    this.setState({ videosList: newVideosList });
   };
 
   render() {

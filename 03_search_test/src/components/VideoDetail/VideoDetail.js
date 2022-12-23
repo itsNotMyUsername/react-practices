@@ -26,6 +26,7 @@ class VideoDetail extends React.Component {
             width={this.props.width}
             height={(this.props.width / 16) * 9}
             title="video"
+            allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
             src={`https://www.youtube.com/embed/${this.props.video.id}?autoplay=0&origin=http://localhost:3000`}
           ></iframe>
         </Grid>
