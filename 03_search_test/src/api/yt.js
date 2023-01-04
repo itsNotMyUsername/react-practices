@@ -4,7 +4,7 @@ export default axios.create({
   baseURL: "https://yt.lemnoslife.com/noKey",
   params: {
     part: "id,snippet",
-    maxResults: 2,
+    maxResults: 8,
     type: "video",
   },
 });

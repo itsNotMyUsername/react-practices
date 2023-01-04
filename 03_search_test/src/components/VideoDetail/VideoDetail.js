@@ -15,19 +15,20 @@ class VideoDetail extends React.Component {
         alignItems="center"
       >
         <Grid
+          key={this.props.video.id}
           item
           sx={{
             padding: 0,
           }}
         >
           <iframe
-            id="ytplayer"
-            type="text/html"
             width={this.props.width}
             height={(this.props.width / 16) * 9}
-            title="video"
-            allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-            src={`https://www.youtube.com/embed/${this.props.video.id}?autoplay=0&origin=http://localhost:3000`}
+            title={this.props.video.title}
+            src={`https://www.youtube.com/embed/${this.props.video.id}`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
           ></iframe>
         </Grid>
         <Grid item>

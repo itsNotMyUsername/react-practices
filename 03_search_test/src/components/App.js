@@ -49,6 +49,7 @@ class App extends React.Component {
       id: results[0].id.videoId,
       title: results[0].snippet.title,
       description: results[0].snippet.description,
+      thumbnail: results[0].snippet.thumbnails.medium.url,
     };
 
     this.setState({
@@ -85,15 +86,21 @@ class App extends React.Component {
 
   onListVideosClick = async (videoId) => {
     let newVideosList = this.state.videosList.filter((video) => {
-      console.log({ video });
       if (video.id.videoId === videoId) {
-        this.setState({ currentVideo: video });
+        this.setState({
+          currentVideo: {
+            id: video.id.videoId,
+            title: video.snippet.title,
+            description: video.snippet.description,
+            thumbnail: video.snippet.thumbnails.medium.url,
+          },
+        });
         return false;
       }
       return true;
     });
 
-    if (this.state.videosList.length < 2) {
+    if (this.state.videosList.length < 4) {
       const results = await this.search(this.state.searchTerm);
       newVideosList = newVideosList.concat(results);
     }
