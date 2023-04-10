@@ -18,11 +18,7 @@ const BookShow = ({ book, deleteBookByID, editBookByID }) => {
     setEditMode(false);
   };
 
-  let content = (
-    <h3>
-      {book.title} {book.id}
-    </h3>
-  );
+  let content = <h3>{book.title}</h3>;
   if (editMode) {
     content = <BookEdit book={book} onSubmit={handleSubmit} />;
   }

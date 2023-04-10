@@ -1,33 +1,44 @@
 import BookList from "./components/BookList";
 import BookCreate from "./components/BookCreate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  createNewBook,
+  listBooks,
+  editBookByID,
+  deleteBookByID,
+} from "./api/api";
 
 function App() {
   const [books, setBooks] = useState([]);
 
-  const createBook = (title) => {
-    console.log(title);
-    const updatedBooks = [
-      {
-        id: Math.floor(Math.random() * 1000),
-        title: title,
-      },
-      ...books,
-    ];
-    setBooks(updatedBooks);
+  useEffect(() => {
+    const fetchData = async () => {
+      const resp = await listBooks();
+      setBooks(resp);
+    };
+    fetchData();
+  }, []);
+
+  const createBook = async (title) => {
+    const book = await createNewBook(title);
+
+    setBooks([...books, book]);
   };
 
-  const editBookByID = (id, title) => {
+  const editBook = async (id, title) => {
+    const updated = await editBookByID(id, title);
     const updatedBooks = books.map((book) => {
       if (book.id === id) {
-        return { ...book, title: title };
+        return { ...book, ...updated };
       }
       return book;
     });
     setBooks(updatedBooks);
   };
 
-  const deleteBookByID = (id) => {
+  const deleteBook = async (id) => {
+    await deleteBookByID(id);
+
     const updatedBooks = books.filter((book) => {
       return book.id !== id;
     });
@@ -38,8 +49,8 @@ function App() {
     <div className="app">
       <BookList
         books={books}
-        deleteBookByID={deleteBookByID}
-        editBookByID={editBookByID}
+        deleteBookByID={deleteBook}
+        editBookByID={editBook}
       />
       <BookCreate createBook={createBook} />
     </div>
