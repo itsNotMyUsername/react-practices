@@ -9,7 +9,6 @@ const createNewBook = async (title) => {
   const response = await axios.post(`http://localhost:3001/books/`, {
     title: title,
   });
-  console.log(response);
   return response.data;
 };
 

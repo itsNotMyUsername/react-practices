@@ -1,12 +1,14 @@
 import { useState } from "react";
+import useBooksContext from "../hooks/useBooksContext";
 import BookEdit from "./BookEdit";
 
-const BookShow = ({ book, deleteBookByID, editBookByID }) => {
+const BookShow = ({ book }) => {
   const [editMode, setEditMode] = useState(false);
+  const { editBook, deleteBook } = useBooksContext();
 
   const handleOnClickDelete = (e) => {
     e.preventDefault();
-    deleteBookByID(book.id);
+    deleteBook(book.id);
   };
 
   const handleOnClickEdit = () => {
@@ -14,7 +16,7 @@ const BookShow = ({ book, deleteBookByID, editBookByID }) => {
   };
 
   const handleSubmit = (title) => {
-    editBookByID(book.id, title);
+    editBook(book.id, title);
     setEditMode(false);
   };
 
@@ -22,6 +24,7 @@ const BookShow = ({ book, deleteBookByID, editBookByID }) => {
   if (editMode) {
     content = <BookEdit book={book} onSubmit={handleSubmit} />;
   }
+
   return (
     <div className="book-show">
       <img src={`https://picsum.photos/seed/${book.id}/300/200`} alt="random" />
