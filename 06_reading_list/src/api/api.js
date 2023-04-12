@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const listBooks = async (id) => {
+const listBooks = async () => {
   const response = await axios.get(`http://localhost:3001/books`);
   return response.data;
 };
