@@ -1,52 +1,30 @@
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
-import Checkbox from "@mui/material/Checkbox";
-
-import "./Editor.css";
+import Button from "@mui/material/Button";
 import useQuestionsContext from "../../hooks/useQuestionsContext";
+import "./Editor.css";
+import Answers from "../Answers/Answers";
+import { useCallback, useEffect, useState } from "react";
 
 const Editor = () => {
   const { loaded } = useQuestionsContext();
+  const [checkedCounter, setCheckedCounter] = useState(0);
+  const [disabled, setDisabled] = useState(false);
+
+  const setCounter = useCallback((count) => {
+    console.log("increaseCounter");
+    setCheckedCounter(count);
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect", { checkedCounter });
+    checkedCounter === 0 ? setDisabled(true) : setDisabled(false);
+  }, [checkedCounter, setDisabled]);
 
   const renderedItems = () => {
-    return loaded && !loaded.incorrect_answers ? (
-      <></>
-    ) : (
-      <>
-        <Grid container spacing={2}>
-          <Grid xs={10} display="flex" justifyContent="left">
-            Answers
-          </Grid>
-          <Grid xs={2} display="flex" justifyContent="left">
-            IsCorrect
-          </Grid>
-        </Grid>
-        <Grid container spacing={0}>
-          <Grid xs={10}>
-            <TextField
-              variant="outlined"
-              value={loaded ? loaded.correct_answer : ""}
-            />
-          </Grid>
-          <Grid xs={2}>
-            <Checkbox checked={true} />
-          </Grid>
-        </Grid>
-        {loaded &&
-          loaded.incorrect_answers.map((answer, index) => {
-            return (
-              <Grid key={index} container spacing={0}>
-                <Grid xs={10}>
-                  <TextField variant="outlined" value={answer} />
-                </Grid>
-                <Grid xs={2}>
-                  <Checkbox />
-                </Grid>
-              </Grid>
-            );
-          })}
-      </>
-    );
+    return loaded ? (
+      <Answers checkedCounter={checkedCounter} setCounter={setCounter} />
+    ) : null;
   };
 
   return (
@@ -60,10 +38,15 @@ const Editor = () => {
           <Grid container spacing={2}>
             <TextField
               variant="outlined"
-              value={loaded ? loaded.question : ""}
+              value={loaded && loaded.question ? loaded.question : ""}
             />
           </Grid>
           {renderedItems()}
+          <div>
+            <Button variant="outlined" size="medium" disabled={disabled}>
+              Save
+            </Button>
+          </div>
         </Grid>
       </form>
     </div>

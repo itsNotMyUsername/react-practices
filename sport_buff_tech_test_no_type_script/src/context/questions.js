@@ -10,11 +10,24 @@ const Provider = ({ children }) => {
 
   const fetchMoreQuestions = useCallback(async () => {
     const results = await fetchQuestions();
-    setFetched(results);
+    const mapped = results.map((result) => {
+      const answers = result.incorrect_answers.map((ia) => {
+        return { isCorrect: false, answer: ia };
+      });
+      if (result.correct_answer)
+        answers.push({ isCorrect: true, answer: result.correct_answer });
+      return {
+        category: result.category,
+        difficulty: result.difficulty,
+        question: result.question,
+        answers: answers,
+      };
+    });
+    console.log(mapped);
+    setFetched(mapped);
   }, []);
 
   useEffect(() => {
-    // console.log(fetched[0]);
     setLoaded(fetched[0]);
     setQuestions((existing) => [...existing, ...fetched]);
   }, [fetched]);
