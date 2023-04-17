@@ -1,0 +1,20 @@
+.container {
+  background-color: rgba(210, 212, 210, 0.5);
+  padding: 20px 0 30px;
+}
+
+.index-box {
+  background-color: rgb(255, 255, 255);
+  max-width: 90%;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.input {
+  flex-grow: 8;
+}
