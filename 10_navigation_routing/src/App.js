@@ -1,23 +1,9 @@
-import Accordion from "./components/Accordion";
+import DropdownPage from "./pages/DropdownPage";
 
 const App = () => {
-  const items = [
-    {
-      label: "a",
-      content: "aa",
-    },
-    {
-      label: "b",
-      content: "bb",
-    },
-    {
-      label: "c",
-      content: "cc",
-    },
-  ];
   return (
     <div>
-      <Accordion items={items} />
+      <DropdownPage />
     </div>
   );
 };
