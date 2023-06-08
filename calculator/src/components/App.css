@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  color: white;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: x-large;
+  max-width: 250px;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.result {
+  background-color: #5c5651;
+  padding: 15px 15px 15px 0;
+  text-align: right;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.grey {
+  padding: 10px 0px;
+  text-align: center;
+  background-color: #6c6763;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.light-grey {
+  background-color: #85807d;
+  padding: 10px 0px;
+  text-align: center;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.orange {
+  background-color: orange;
+  padding: 10px 0px;
+  text-align: center;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
