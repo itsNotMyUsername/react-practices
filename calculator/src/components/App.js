@@ -1,138 +1,142 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Item from "./Item/Item";
 
 function App() {
+  const [displayValue, setDisplayValue] = useState("0");
   const [result, setResult] = useState(0);
-  const [tempValue1, setTempValue1] = useState(0);
-  const [tempValue2, setTempValue2] = useState(0);
+  const [tempValue1, setTempValue1] = useState("");
+  const [tempValue2, setTempValue2] = useState("");
   const [action, setAction] = useState("");
 
-  // console.log(result, tempValue1, action, tempValue2);
+  const handleEqualsOperation = () => {
+    if (tempValue1 && tempValue2) {
+      setResult(calculate(action));
+      setTempValue1(result.toString());
+      setTempValue2("");
+      setAction("");
+      setDisplayValue(tempValue1);
+    }
+  };
 
-  const handleSpecialCaseClick = (value) => {
-    switch (value) {
+  const handleOpeartionAction = (e) => {
+    setAction(e.target.innerText);
+  };
+
+  const handleActionClick = (action) => {
+    switch (action) {
       case "AC":
         setResult(0);
         setTempValue1(0);
         setTempValue2(0);
         setAction("");
         break;
-      case "=":
-        setResult(calculate(action));
-        setTempValue1(result);
-        setTempValue2(0);
+      case "+/-":
+        // if (tempValue2 !== 0) {
+        //   setTempValue2(tempValue2 * -1);
+        // } else if (tempValue1 !== 0) {
+        //   setTempValue1(tempValue1 * -1);
+        // }
         break;
-      case "+":
-      case "-":
-      case "x":
-      case "/":
-        if (tempValue1 !== 0) setAction(value);
+      case "%":
         break;
       default:
         return;
     }
   };
 
+  useEffect(() => {
+    evaluateDisplayValue();
+  }, [displayValue]);
+
   const calculate = (action) => {
     switch (action) {
       case "/":
-        return tempValue1 / tempValue2;
+        return Number(tempValue1) / Number(tempValue2);
       case "x":
-        return tempValue1 * tempValue2;
+        return Number(tempValue1) * Number(tempValue2);
       case "-":
-        return tempValue1 - tempValue2;
+        return Number(tempValue1) - Number(tempValue2);
       case "+":
-        return tempValue1 + tempValue2;
+        return Number(tempValue1) + Number(tempValue2);
       default:
         return 0;
     }
   };
 
-  const handleClick = (e) => {
-    const specialCases = ["AC", "+-", "%", "/", "x", "-", "+", "="];
-    const value = e.target.innerText;
-    console.log(value);
-    console.log(typeof tempValue1);
-    if (tempValue1 === 0) {
-      setTempValue1(parseInt(value));
-      setResult(tempValue1);
-    } else {
-      setTempValue2(parseInt(value));
+  const evaluateDisplayValue = () => {
+    if (tempValue1 !== "" && tempValue2 === "") {
+      setDisplayValue(tempValue1);
     }
+    if (tempValue2 !== "") {
+      return setDisplayValue(tempValue2);
+    }
+    return setDisplayValue(result);
+  };
 
-    if (specialCases.includes(value)) {
-      handleSpecialCaseClick(value);
+  const handleClick = (e) => {
+    if (tempValue1 === "") {
+      setTempValue1(e.target.innerText);
+    } else if (tempValue1 !== "" && tempValue2 === "" && action === "") {
+      setTempValue1(tempValue1 + e.target.innerText);
+    } else {
+      setTempValue2(tempValue2 + e.target.innerText);
     }
   };
 
   return (
     <div className="container">
       <Grid container spacing={0} alignItems="center" justify="center">
-        <Grid xs={12}>
-          <div className="result">{result}</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="grey">AC</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="grey">+/-</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="grey">%</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="orange">/</div>
-        </Grid>
+        <Item value={displayValue} classes="result" size={12} />
+        <Item value="AC" classes="grey" size={3} onClick={handleActionClick} />
+        <Item value="+/-" classes="grey" size={3} onClick={handleActionClick} />
+        <Item value="%" size={3} onClick={handleActionClick} classes="grey" />
+        <Item
+          value="/"
+          size={3}
+          onClick={handleOpeartionAction}
+          classes="orange"
+        />
 
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">7</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">8</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">9</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="box orange">x</div>
-        </Grid>
+        <Item value="7" size={3} onClick={handleClick} classes="light-grey" />
+        <Item value="8" size={3} onClick={handleClick} classes="light-grey" />
+        <Item value="9" size={3} onClick={handleClick} classes="light-grey" />
+        <Item
+          value="x"
+          size={3}
+          onClick={handleOpeartionAction}
+          classes="orange"
+        />
 
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">4</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">5</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">6</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="orange">-</div>
-        </Grid>
+        <Item value="4" size={3} onClick={handleClick} classes="light-grey" />
+        <Item value="5" size={3} onClick={handleClick} classes="light-grey" />
+        <Item value="6" size={3} onClick={handleClick} classes="light-grey" />
+        <Item
+          value="+"
+          size={3}
+          onClick={handleOpeartionAction}
+          classes="orange"
+        />
 
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">1</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">2</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">3</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="orange">+</div>
-        </Grid>
+        <Item value="1" size={3} onClick={handleClick} classes="light-grey" />
+        <Item value="2" size={3} onClick={handleClick} classes="light-grey" />
+        <Item value="3" size={3} onClick={handleClick} classes="light-grey" />
+        <Item
+          value="-"
+          size={3}
+          onClick={handleOpeartionAction}
+          classes="orange"
+        />
 
-        <Grid xs={6} onClick={handleClick}>
-          <div className="light-grey">0</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="light-grey">.</div>
-        </Grid>
-        <Grid xs={3} onClick={handleClick}>
-          <div className="orange">=</div>
-        </Grid>
+        <Item value="0" size={6} onClick={handleClick} classes="light-grey" />
+        <Item value="." size={3} onClick={handleClick} classes="light-grey" />
+        <Item
+          value="="
+          size={3}
+          onClick={handleEqualsOperation}
+          classes="orange"
+        />
       </Grid>
     </div>
   );
