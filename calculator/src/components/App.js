@@ -13,42 +13,8 @@ function App() {
   const handleEqualsOperation = () => {
     if (tempValue1 && tempValue2) {
       setResult(calculate(action));
-      setTempValue1(result.toString());
-      setTempValue2("");
-      setAction("");
-      setDisplayValue(tempValue1);
     }
   };
-
-  const handleOpeartionAction = (e) => {
-    setAction(e.target.innerText);
-  };
-
-  const handleActionClick = (action) => {
-    switch (action) {
-      case "AC":
-        setResult(0);
-        setTempValue1(0);
-        setTempValue2(0);
-        setAction("");
-        break;
-      case "+/-":
-        // if (tempValue2 !== 0) {
-        //   setTempValue2(tempValue2 * -1);
-        // } else if (tempValue1 !== 0) {
-        //   setTempValue1(tempValue1 * -1);
-        // }
-        break;
-      case "%":
-        break;
-      default:
-        return;
-    }
-  };
-
-  useEffect(() => {
-    evaluateDisplayValue();
-  }, [displayValue]);
 
   const calculate = (action) => {
     switch (action) {
@@ -65,23 +31,76 @@ function App() {
     }
   };
 
-  const evaluateDisplayValue = () => {
-    if (tempValue1 !== "" && tempValue2 === "") {
-      setDisplayValue(tempValue1);
+  const handleOpeartionAction = (e) => {
+    if (tempValue1) {
+      setAction(e.target.innerText);
     }
-    if (tempValue2 !== "") {
-      return setDisplayValue(tempValue2);
-    }
-    return setDisplayValue(result);
   };
 
   const handleClick = (e) => {
-    if (tempValue1 === "") {
-      setTempValue1(e.target.innerText);
-    } else if (tempValue1 !== "" && tempValue2 === "" && action === "") {
+    if (displayValue === "0") {
+      if (!tempValue1) {
+        setTempValue1(e.target.innerText);
+      } else {
+        if (tempValue2) {
+          setTempValue2(e.target.innerText);
+        }
+      }
+    } else if (action) {
+      if (tempValue2) {
+        setTempValue2(tempValue2 + e.target.innerText);
+      } else {
+        setTempValue2(e.target.innerText);
+      }
+    } else if (tempValue1 && !tempValue2) {
       setTempValue1(tempValue1 + e.target.innerText);
-    } else {
-      setTempValue2(tempValue2 + e.target.innerText);
+    }
+  };
+
+  useEffect(() => {
+    let updated = tempValue2 ? tempValue2 : tempValue1;
+    if (!updated) updated = "0";
+    setDisplayValue(updated);
+  }, [tempValue1, tempValue2]);
+
+  useEffect(() => {
+    if (result) {
+      setTempValue1(result.toString());
+      setTempValue2("");
+      setAction("");
+      setDisplayValue(result.toString());
+    }
+  }, [result]);
+
+  const handleActionClick = (e) => {
+    switch (e.target.innerText) {
+      case "AC":
+        setResult(0);
+        setTempValue1(0);
+        setTempValue2(0);
+        setAction("");
+        break;
+      case "+/-":
+        debugger;
+        if (tempValue1 && !tempValue2) {
+          setTempValue1("-" + tempValue1);
+        }
+        if (tempValue2) {
+          setTempValue2("-" + tempValue2);
+        }
+        break;
+      case "%":
+        if (tempValue1 && !tempValue2) {
+          const tmp = Number(tempValue1 / 100);
+          setTempValue1(tmp.toString());
+        }
+        if (tempValue2) {
+          const tmp = Number(tempValue2 / 100);
+          setTempValue2(tmp);
+        }
+        break;
+      default:
+        return;
     }
   };
 
