@@ -1,0 +1,16 @@
+& .indicator {
+  display: "flex";
+  justify-content: "center";
+  background-color: "transparent";
+  & > span {
+    max-width: 40;
+    width: "100%";
+    background-color: "white";
+  }
+}
+
+& .flexContainer {
+  flex-direction: "row";
+  align-items: "center";
+  justify-content: "center";
+}
