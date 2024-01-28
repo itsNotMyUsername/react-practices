@@ -7,9 +7,9 @@ function App({ children }) {
   const [top, setTop] = useState(0);
   const headerRef = useRef();
 
-  useEffect(() => {
-    setTop(headerRef.current.getBoundingClientRect().bottom + 10);
-  }, [headerRef]);
+  // useEffect(() => {
+  //   setTop(headerRef.current.getBoundingClientRect().bottom + 10);
+  // }, [headerRef]);
 
   return (
     <Box>

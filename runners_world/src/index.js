@@ -8,16 +8,27 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./components/App";
 import Shoes from "./routes/Shoes";
+import Root from "./routes/Root";
+import Abc from "./Abc";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
+      // <Abc />
       <App>
-        <Shoes />
+        <Root />
       </App>
     ),
   },
+  // {
+  //   path: "shoes",
+  //   element: (
+  //     <App>
+  //       <Shoes />
+  //     </App>
+  //   ),
+  // },
   // {
   //   path: "training",
   //   element: <Training />,
@@ -25,6 +36,7 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <CssBaseline />
